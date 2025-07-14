@@ -45,6 +45,13 @@
     transform: scale(1.2);
     accent-color: #4caf50;
   }
+
+  .status {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: #4caf50;
+    font-weight: 500;
+  }
 </style>
 </head>
 <body>
@@ -56,6 +63,23 @@
     </label>
   </div>
 
-  <script src="options.js"></script>
+  <script>
+    const checkbox = document.getElementById('enabled');
+    const statusText = document.getElementById('statusText');
+
+    // Optional: load saved state
+    chrome.storage.sync.get(['enabled'], (result) => {
+      if (result.enabled) {
+        checkbox.checked = true;
+        statusText.textContent = "Enabled";
+      }
+    });
+
+    checkbox.addEventListener('change', () => {
+      const isEnabled = checkbox.checked;
+      statusText.textContent = isEnabled ? "Enabled" : "Disabled";
+      chrome.storage.sync.set({ enabled: isEnabled });
+    });
+  </script>
 </body>
 </html>
